@@ -1,0 +1,58 @@
+<div class="sidebar">
+    <div class="logo">
+        <h2>FulFillX</h2>
+    </div>
+    <ul class="nav-links">
+        <!-- Dashboard -->
+        <li><a href="{% url 'usr_dashboard' %}" class="active"><img class="sidebar-img" src="/static/img/includes/sidebar/dashboard.png" alt="dashboard"><span>Dashboard</span></a></li>
+
+        <!-- Sourcing -->
+        <li><a href="{% url 'user_sourcing' %}"><img class="sidebar-img" src="/static/img/includes/sidebar/sourcing.png" alt="sourcing"><span>Sourcing</span></a></li>
+
+        <!-- Products -->
+        <li class="dropdown">
+        <a href="#" class="dropdown-btn"><img class="sidebar-img" src="/static/img/includes/sidebar/product.png" alt="product"><span>Products</span></a>
+        <ul class="dropdown-content">
+            <li><a href="{% url 'find_products' %}">Find Products</a></li>
+            <li><a href="{% url 'custom_products' %}">Custom Products</a></li>
+            <li><a href="{% url 'my_products' %}">My Products</a></li>
+            <li><a href="#">My Cart</a></li>
+            <li><a href="{% url 'import_list' %}">Import List</a></li>
+        </ul>
+        </li>
+
+        <!-- Orders -->
+        <li class="dropdown">
+        <a href="#" class="dropdown-btn"><img class="sidebar-img" src="/static/img/includes/sidebar/orders.png" alt="orders"><span>Orders</span></a>
+        <ul class="dropdown-content">
+            <li><a href="#">All Orders</a></li>
+            <li><a href="#">Shipments</a></li>
+        </ul>
+        </li>
+
+        <!-- Inventory -->
+        <li><a href="#"><img class="sidebar-img" src="/static/img/includes/sidebar/inventory.png" alt="inventory"><span>Inventory</span></a></li>
+
+        <!-- Manage Store -->
+        <li><a href="{% url 'manage_store' %}"><img class="sidebar-img" src="/static/img/includes/sidebar/store.png" alt="store"><span>Manage Store</span></a></li>
+        
+        <!-- Wallet -->
+        <li class="dropdown">
+        <a href="#" class="dropdown-btn"><img class="sidebar-img" src="/static/img/includes/sidebar/wallet.png" alt="wallet"><span>My Wallet</span></a>
+        <ul class="dropdown-content">
+            <li><a href="#">Finance</a></li>
+            <li><a href="#">My Invoice</a></li>
+        </ul>
+        </li>
+
+        <!-- knowledge hub -->
+        <li><a href="#"><img class="sidebar-img" src="/static/img/includes/sidebar/knowledgehub.png" alt="knowledgehub"><span>Knowledge Hub</span></a></li>
+
+        <!-- Support -->
+        <li><a href="#"><img class="sidebar-img" src="/static/img/includes/sidebar/support.png" alt="support"><span>Support</span></a></li>
+    </ul>
+
+    <div class="logout">
+        <a href="{% url 'logout' %}"><img class="sidebar-img" src="/static/img/includes/sidebar/logout.png" alt="logout"><span>Log out</span></a>
+    </div>
+</div>

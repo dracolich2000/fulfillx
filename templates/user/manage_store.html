@@ -1,0 +1,39 @@
+{% extends 'layouts/user-base.html' %}
+
+{% block title %} Manage Store {% endblock %}
+
+<!-- Specific CSS goes HERE -->
+{% block stylesheet %}
+<link rel="stylesheet" href="/static/css/user/styles.css">
+{% endblock %}
+
+{% block content %}
+
+    <div class="link-store-container">
+        <button class="link-store-btn">Link new Shopify Store</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Store Details</th>
+                <th>Store Platform</th>
+                <th>Linked On</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <button class="btn update-price">Edit</button>
+                    <button class="btn delete">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+{% endblock %}

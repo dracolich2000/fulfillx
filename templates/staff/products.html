@@ -1,0 +1,95 @@
+{% extends 'layouts/staff-base.html' %}
+
+{% block title %} Products {% endblock %}
+
+
+{% block stylesheet %}
+<link rel="stylesheet" href="/static/css/staff/styles.css">
+{% endblock %}
+
+{% block content %}
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="product-container" hidden>
+    <h1>Products Management</h1>
+    <div class="tabs">
+        <div class="tab" data-tab="add-product">Add Product</div>
+        <div class="tab" data-tab="existing-products">Existing Products</div>
+    </div>
+
+    <div id="add-product" class="tab-content active">
+        <h2>Add New Product</h2>
+        <form id="addProductForm" method="POST" enctype="multipart/form-data" action="{% url 'add_product' %}">  
+            {% csrf_token %}
+            <label for="product_name">Product Name:</label>
+            <input type="text" id="product_name" name="product_name" required>
+
+            <label for="product_image">Product Images:</label>
+            <input type="file" id="product_image" name="product_image" accept="image/*" multiple required>
+
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="category" required>
+
+            <label for="product_description">Product Description:</label>
+            <textarea id="product_description" name="product_description" rows="4" required></textarea>
+
+            <label for="vendor">Vendor:</label>
+            <select name="vendor" id="vendor" required>
+                <option value="">Select</option>
+                {% for vendor in vendors %}
+                    <option value="{{vendor.username}}">{{vendor.username}}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
+    </div>
+
+    <div id="existing-products" class="tab-content">
+        <h2>Existing Products</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product ID</th>
+                    <th>Product Detail</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                <tr>
+                    <td>{{ product.id }}</td>
+                    <td>
+                        <div class="product-details">
+                            {% if product.images.exists %}
+                                <img class='product-img' src="{{ product.images.first.image.url }}" alt="{{ product.name }}">
+                            {% else %}
+                                No Image
+                            {% endif %}
+                            <span>{{ product.name }}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <a href="{% url 'update_product' product.id %}" class="btn btn-success">Update</a>
+                        <a href="{% url 'delete_product' product.id %}" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script src="/static/js/staff/script.js"></script>
+{% endblock %}
+

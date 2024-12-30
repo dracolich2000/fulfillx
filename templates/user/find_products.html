@@ -1,0 +1,50 @@
+{% extends 'layouts/user-base.html' %}
+
+{% block title %} Find Products {% endblock %}
+
+{% block stylesheet %}
+<link rel="stylesheet" href="/static/css/user/styles.css">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="categories">
+            <div class="category">
+                <img src="https://via.placeholder.com/80" alt="Category 1">
+                <div class="category-name">Category 1</div>
+            </div>
+            <div class="category">
+                <img src="https://via.placeholder.com/80" alt="Category 2">
+                <div class="category-name">Category 2</div>
+            </div>
+            <div class="category">
+                <img src="https://via.placeholder.com/80" alt="Category 3">
+                <div class="category-name">Category 3</div>
+            </div>
+            <div class="category">
+                <img src="https://via.placeholder.com/80" alt="Category 4">
+                <div class="category-name">Category 4</div>
+            </div>
+            <div class="category">
+                <img src="https://via.placeholder.com/80" alt="Category 5">
+                <div class="category-name">Category 5</div>
+            </div>
+        </div>
+        <div class="products">
+            {% for product in products %}
+            <div class="product-card">
+                {% if product.images.exists %}
+                    <img src="{{ product.images.first.image.url }}" alt="Product 1">
+                {% else %}
+                    No Image
+                {% endif %}
+                <div class="product-content">
+                    <h3 class="product-name">{{product.name}}</h3>
+                    <p class="product-description">{{product.description}}</p>
+                    <a href="#" class="view-button">View</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
