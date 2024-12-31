@@ -84,7 +84,7 @@ DATABASES = {
         'NAME': 'fulfillx_db',   # Replace with your database name
         'USER': 'fulfillx_admin',   # Replace with your database user
         'PASSWORD': '12345',    # Replace with your password
-        'HOST': 'localhost',            # Or the host of your PostgreSQL server
+        'HOST': 'db.fulfillX.render.com',            # Or the host of your PostgreSQL server
         'PORT': '5432',                 # Default PostgreSQL port
     }
 }
