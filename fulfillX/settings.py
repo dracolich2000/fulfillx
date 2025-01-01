@@ -142,3 +142,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Media settings
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+SHOPIFY_API_KEY = '20431e5b8d64a1f3ae734dd80a8eabb0'
+SHOPIFY_API_SECRET = '7cbed65d990977033746e8aa0d7c2f7a'
+SHOPIFY_REDIRECT_URI = 'https://fulfillx.onrender.com/shopify/callback/'

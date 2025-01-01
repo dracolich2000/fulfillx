@@ -1,10 +1,10 @@
-{% extends 'layouts/staff-base.html' %}
+{% extends 'layouts/admin-base.html' %}
 
 {% block title %} Sourcing Requests {% endblock %}
 
 
 {% block stylesheet %}
-<link rel="stylesheet" href="/static/css/staff/styles.css">
+<link rel="stylesheet" href="/static/css/admin_panel/styles.css">
 {% endblock %}
 
 {% block content %}
@@ -28,7 +28,8 @@
                     <th>created at</th>
                     <th>Status</th>
                     <th>Review</th>
-                    <th>Actions</th>
+                    <th>Last Updated</th>
+                    <th>Updated By</th>
                 </tr>
             </thead>
             <tbody>
@@ -53,11 +54,8 @@
                     <td>{{req.created_at}}</td>
                     <td>{{ req.status }}</td>
                     <td>{{ req.review }}</td>
-                    <td>
-                        <div class="actions">
-                            <button class="view" onclick="openSourcingForm('{{ req.id }}')">Update Status</button>
-                        </div>
-                    </td>
+                    <td>{{req.last_updated}}</td>
+                    <td>{{req.updated_by}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -76,7 +74,8 @@
                     <th>created at</th>
                     <th>Status</th>
                     <th>Review</th>
-                    <th>Actions</th>
+                    <th>Last Updated</th>
+                    <th>Updated By</th>
                 </tr>
             </thead>
             <tbody>
@@ -101,11 +100,8 @@
                     <td>{{req.created_at}}</td>
                     <td>{{ req.status }}</td>
                     <td>{{ req.review }}</td>
-                    <td>
-                        <div class="actions">
-                            <button class="view" onclick="openSourcingForm('{{ req.id }}')">Update Status</button>
-                        </div>
-                    </td>
+                    <td>{{req.last_updated}}</td>
+                    <td>{{req.updated_by}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -124,7 +120,8 @@
                     <th>created at</th>
                     <th>Status</th>
                     <th>Review</th>
-                    <th>Actions</th>
+                    <th>Last Updated</th>
+                    <th>Updated By</th>
                 </tr>
             </thead>
             <tbody>
@@ -149,11 +146,8 @@
                     <td>{{req.created_at}}</td>
                     <td>{{ req.status }}</td>
                     <td>{{ req.review }}</td>
-                    <td>
-                        <div class="actions">
-                            <button class="view" onclick="openSourcingForm('{{ req.id }}')">Update Status</button>
-                        </div>
-                    </td>
+                    <td>{{req.last_updated}}</td>
+                    <td>{{req.updated_by}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -172,7 +166,8 @@
                     <th>created at</th>
                     <th>Status</th>
                     <th>Review</th>
-                    <th>Actions</th>
+                    <th>Last Updated</th>
+                    <th>Updated By</th>
                 </tr>
             </thead>
             <tbody>
@@ -197,51 +192,17 @@
                     <td>{{req.created_at}}</td>
                     <td>{{ req.status }}</td>
                     <td>{{ req.review }}</td>
-                    <td>
-                        <div class="actions">
-                            <button class="view" onclick="openSourcingForm('{{ req.id }}')">Update Status</button>
-                        </div>
-                    </td>
+                    <td>{{req.last_updated}}</td>
+                    <td>{{req.updated_by}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
-
-<!-- Modal -->
-<div id="SourcingModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeSourcingForm()">&times;</span>
-        <h2>Update Sourcing Request Status</h2>
-        <form id="SourcingForm" method="POST" action="{% url 'update_sourcing_req_status' %}">
-            {% csrf_token %}
-            <!-- Hidden field to store the request ID -->
-            <input type="hidden" name="request_id" id="request_id">
-
-            <!-- Dropdown for status selection -->
-            <label for="status">Select Status:</label>
-            <select name="status" id="status" required>
-                <option value="Pending">Pending</option>
-                <option value="In Progress">In Progress</option>
-                <option value="Completed">Completed</option>
-                <option value="Rejected">Rejected</option>
-            </select>
-            <br><br>
-
-            <!-- Textarea for review -->
-            <label for="review">Add Review:</label>
-            <textarea name="review" id="review" rows="3" placeholder="Write your review here..." required></textarea>
-            <br><br>
-
-            <!-- Submit button -->
-            <button type="submit" class="btn btn-success">Update</button>
-        </form>
-    </div>
-</div>
 {% endblock %}
 
 
 {% block js %}
-<script src="/static/js/staff/script.js"></script>
+<script src="/static/js/admin_panel/script.js"></script>
 {% endblock %}

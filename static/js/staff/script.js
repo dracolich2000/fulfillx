@@ -48,3 +48,26 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+function openSourcingForm(requestId) {
+    // Populate user_id in the hidden input
+    document.getElementById("request_id").value = requestId;
+
+    // Display the modal
+    const modal = document.getElementById("SourcingModal");
+    modal.style.display = "block";
+}
+
+function closeSourcingForm() {
+    // Hide the modal
+    const modal = document.getElementById("SourcingModal");
+    modal.style.display = "none";
+}
+
+// Optional: Close modal when clicking outside of it
+window.onclick = function (event) {
+    const modal = document.getElementById("SourcingModal");
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+};

@@ -10,4 +10,5 @@ urlpatterns = [
     path('update_product/<int:product_id>/',views.update_product,name='update_product'),
     path('delete_product/<int:product_id>/',views.delete_product,name='delete_product'),
     path('staff_sourcing_requests/',views.sourcing_requests,name='staff_sourcing_requests'),
+    path('update_sourcing_request_status/',views.update_sourcing_req_status,name='update_sourcing_req_status')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

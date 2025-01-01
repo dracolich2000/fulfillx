@@ -23,6 +23,7 @@ class SourcingProductRequest(models.Model):
     description = models.TextField()
     added_by = models.CharField(max_length=255, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_by = models.CharField(max_length=255, blank=True, null=True)
     last_updated = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=255, blank=True, null=True)
     review = models.TextField(blank=True, null=True)

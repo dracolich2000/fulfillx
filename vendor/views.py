@@ -3,13 +3,16 @@ from staff.models import Products
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
+from fulfillX.access_control_decorater import role_required
 
 # Create your views here.
+@role_required('Vendor')
 @login_required(login_url='login')
 @never_cache
 def vendor_dashboard(request):
     return render(request, 'vendor/dashboard.html')
 
+@role_required('Vendor')
 @login_required(login_url='login')
 @never_cache
 def products(request):
@@ -17,20 +20,21 @@ def products(request):
     products = Products.objects.filter(vendor=vendor)
     return render(request, 'vendor/products.html',{'products':products})
 
+@role_required('Vendor')
 @login_required(login_url='login')
 @never_cache
 def update_inventory(request):
-    try:
-        if request.method == 'POST':
-            product_id = request.POST.get('product_id')
-            print(product_id)
-            inventory = request.POST.get('inventory')
+    if request.method == 'POST':
+        product_id = request.POST.get('product_id')
+        inventory = request.POST.get('inventory')
+        
+        try:
             product = get_object_or_404(Products, id=product_id)
             product.inventory = inventory
             product.save()
-            
+        
             messages.success(request, 'Inventory updated successfully!')
             return redirect('vendor_products')
-    except:
-        messages.error(request, 'Please try again!')
-        return redirect('vendor_products')
+        except:
+            messages.error(request, 'Please try again!')
+            return redirect('vendor_products')

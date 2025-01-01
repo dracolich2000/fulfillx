@@ -3,15 +3,18 @@ from authentication.models import StaffUser
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from django.contrib import messages
-from staff.models import Products
+from staff.models import Products, SourcingProductRequest
+from fulfillX.access_control_decorater import role_required
 
 
 # Create your views here.
+@role_required('Admin')
 @login_required(login_url='login')
 @never_cache
 def admin_dashboard(request):
     return render(request, 'admin_panel/dashboard.html')
 
+@role_required('Admin')
 @login_required(login_url='login')
 @never_cache
 def users(request):
@@ -22,13 +25,14 @@ def users(request):
                                                      'vendors':vendor_users,
                                                      'users': regular_users})
 
+@role_required('Admin')
 @login_required(login_url='login')
 @never_cache
 def user_details(request, user_id):
     user = get_object_or_404(StaffUser, id=user_id)
     return render(request, 'admin_panel/user_details.html', {'user':user})
 
-
+@role_required('Admin')
 @login_required(login_url='login')
 @never_cache
 def assign_role(request):
@@ -68,8 +72,22 @@ def assign_role(request):
     messages.error(request, "Invalid request method.")
     return redirect('users')
 
+@role_required('Admin')
 @login_required(login_url='login')
 @never_cache
 def products(request):
     products = Products.objects.all()
     return render(request, 'admin_panel/products.html',{'products':products})
+
+@role_required('Admin')
+@login_required(login_url='login')
+@never_cache
+def sourcing_requests(request):
+    completed_requests = SourcingProductRequest.objects.filter(status='Completed')
+    pending_requests = SourcingProductRequest.objects.filter(status='Pending')
+    in_progress_requests = SourcingProductRequest.objects.filter(status='In Progress')
+    rejected_requests = SourcingProductRequest.objects.filter(status='Rejected')
+    return render(request, 'admin_panel/sourcing_requests.html',{'completed_requests':completed_requests,
+                                                           'pending_requests':pending_requests,
+                                                           'in_progress_requests':in_progress_requests,
+                                                           'rejected_requests':rejected_requests})
