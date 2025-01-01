@@ -10,7 +10,7 @@
 {% block content %}
 
     <div class="link-store-container">
-        <a class="link-store-btn" href="{% url 'shopify_auth' %}">Link new Shopify Store</a>
+        <button id="openModalBtn">Link New Shopify Store</button>
     </div>
     <table>
         <thead>
@@ -35,5 +35,19 @@
             </tr>
         </tbody>
     </table>
+
+    <!-- Modal -->
+    <div id="shopifyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModalBtn">&times;</span>
+            <form method="post" action="{% url 'shopify_auth' %}">
+                {% csrf_token %}
+                <label for="shop">Enter your Shopify store URL:</label>
+                <input type="text" name="shop" id="shop" placeholder="mystore.myshopify.com" required>
+                <button type="submit">Link New Shopify Store</button>
+            </form>
+        </div>
+    </div>
+
 
 {% endblock %}
