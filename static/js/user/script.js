@@ -50,18 +50,18 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // Get modal elements
-const modal = document.getElementById('shopifyModal');
-const openModalBtn = document.getElementById('openModalBtn');
-const closeModalBtn = document.getElementById('closeModalBtn');
+const modal = document.getElementById('shopifyModal'); // The modal container
+const openModalBtn = document.getElementById('openModalBtn'); // The button to open the modal
+const closeModalBtn = document.getElementById('closeModalBtn'); // The close button inside the modal
 
 // Open modal
 openModalBtn.addEventListener('click', () => {
-    modal.style.display = 'block';
+    modal.style.display = 'block'; // Show the modal
 });
 
 // Close modal
 closeModalBtn.addEventListener('click', () => {
-    modal.style.display = 'none';
+    modal.style.display = 'none'; // Hide the modal
 });
 
 // Close modal when clicking outside of it
