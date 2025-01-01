@@ -49,3 +49,24 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
+// Get modal elements
+const modal = document.getElementById('shopifyModal');
+const openModalBtn = document.getElementById('openModalBtn');
+const closeModalBtn = document.getElementById('closeModalBtn');
+
+// Open modal
+openModalBtn.addEventListener('click', () => {
+    modal.style.display = 'block';
+});
+
+// Close modal
+closeModalBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+// Close modal when clicking outside of it
+window.addEventListener('click', (event) => {
+    if (event.target === modal) {
+        modal.style.display = 'none';
+    }
+});
