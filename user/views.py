@@ -112,7 +112,7 @@ def shopify_auth(request):
     redirect_uri = settings.SHOPIFY_REDIRECT_URI
     scopes = "read_products,write_products"  # Adjust scopes based on your app's requirements
 
-    shop = request.GET.get('shop')
+    shop = request.POST['shop']
     if not shop:
         return HttpResponse("Missing 'shop' parameter.", status=400)
 
