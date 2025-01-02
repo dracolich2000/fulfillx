@@ -111,10 +111,10 @@ def shopify_auth(request):
     shopify_api_key = settings.SHOPIFY_API_KEY
     redirect_uri = settings.SHOPIFY_REDIRECT_URI
     scopes = "read_products,write_products"  # Adjust scopes based on your app's requirements
-
-    shop = request.POST['shop']
-    if not shop:
-        return HttpResponse("Missing 'shop' parameter.", status=400)
+    if request.method == 'POST':
+        shop = request.POST['shop']
+        if not shop:
+            return HttpResponse("Missing 'shop' parameter.", status=400)
 
     # Construct the OAuth URL
     oauth_url = f"https://{shop}/admin/oauth/authorize"
