@@ -42,7 +42,8 @@ def import_list(request):
 @never_cache
 def manage_store(request):
     user = request.user.username
-    shops = Shop.objects.filter(linked_by=user)
+    #shops = Shop.objects.filter(linked_by=user)
+    shops = Shop.objects.all()
     return render(request, 'user/manage_store.html',{'shops':shops})
 
 @role_required('User')
