@@ -84,8 +84,9 @@ def new_sourcing_request(request):
 @login_required(login_url='login')
 @never_cache
 def shopify_callback(request):
-    shop = request.GET.get('shop')
-    code = request.GET.get('code')
+    if request.method == 'post':
+        shop = request.POST['shop']
+        code = request.POST['code']
 
     if not shop or not code:
         return HttpResponse("Missing 'shop' or 'code' parameters.", status=400)
