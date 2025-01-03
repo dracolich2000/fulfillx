@@ -8,6 +8,7 @@ import shopify
 from django.conf import settings
 from django.http import HttpResponse
 import urllib.parse
+import requests
 
 # Create your views here.
 @role_required('User')
