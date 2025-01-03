@@ -84,25 +84,32 @@ def new_sourcing_request(request):
 @login_required(login_url='login')
 @never_cache
 def shopify_callback(request):
-    if request.method == 'post':
-        shop = request.POST['shop']
-        code = request.POST['code']
+    # Ensure the request is a GET request
+    if request.method != 'GET':
+        return HttpResponse("Invalid request method. Expected GET.", status=400)
+    
+    # Retrieve the 'shop' and 'code' parameters from the GET request
+    shop = request.GET.get('shop')
+    code = request.GET.get('code')
 
+    # Validate that 'shop' and 'code' are present
     if not shop or not code:
         return HttpResponse("Missing 'shop' or 'code' parameters.", status=400)
 
-    # Exchange code for an access token
+    # Exchange the code for an access token
     url = f"https://{shop}/admin/oauth/access_token"
     payload = {
         "client_id": settings.SHOPIFY_API_KEY,
         "client_secret": settings.SHOPIFY_API_SECRET,
         "code": code,
     }
-    response = request.post(url, json=payload)
+
+    # Send POST request to exchange the code for an access token
+    response = requests.post(url, json=payload)
 
     if response.status_code == 200:
         access_token = response.json().get("access_token")
-        # Save the shop and access token to your database
+        from .models import Shop
         Shop.objects.update_or_create(shop_url=shop, defaults={"access_token": access_token})
         return redirect('usr_dashboard')  # Redirect to your dashboard or desired page
     else:
