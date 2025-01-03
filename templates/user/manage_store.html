@@ -23,16 +23,18 @@
             </tr>
         </thead>
         <tbody>
+            {% for shop in shops %}
             <tr>
-                <td>1</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{ shop.id }}</td>
+                <td>{{shop.shop_name}}</td>
+                <td>{{ shop.shop_platform }}</td>
+                <td>{{ shop.linked_on }}</td>
                 <td>
                     <button class="btn update-price">Edit</button>
                     <button class="btn delete">Delete</button>
                 </td>
             </tr>
+            {% endfor %}
         </tbody>
     </table>
 

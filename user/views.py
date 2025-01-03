@@ -9,6 +9,7 @@ from django.conf import settings
 from django.http import HttpResponse
 import urllib.parse
 import requests
+from .models import Shop
 
 # Create your views here.
 @role_required('User')
@@ -40,7 +41,9 @@ def import_list(request):
 @login_required(login_url='login')
 @never_cache
 def manage_store(request):
-    return render(request, 'user/manage_store.html')
+    user = request.user.username
+    shops = Shop.objects.filter(linked_by=user)
+    return render(request, 'user/manage_store.html',{'shops':shops})
 
 @role_required('User')
 @login_required(login_url='login')
@@ -110,8 +113,21 @@ def shopify_callback(request):
 
     if response.status_code == 200:
         access_token = response.json().get("access_token")
-        from .models import Shop
-        Shop.objects.update_or_create(shop_url=shop, defaults={"access_token": access_token})
+        shop_info_url = f"https://{shop}/admin/api/2023-01/shop.json"
+        headers = {"X-Shopify-Access-Token": access_token}
+        shop_response = requests.get(shop_info_url, headers=headers)
+
+        if shop_response.status_code == 200:
+                shop_data = shop_response.json().get('shop', {})
+                shop_name = shop_data.get('name', 'Unknown Shop')
+
+        Shop.objects.create(
+            shop_name=shop_name,
+            shop_url=shop,
+            access_token=access_token,
+            shop_platform="Shopify",
+            linked_by=request.user.username
+        )
         return redirect('usr_dashboard')  # Redirect to your dashboard or desired page
     else:
         return HttpResponse(f"Failed to get access token: {response.text}", status=400)
