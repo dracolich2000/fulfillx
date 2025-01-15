@@ -69,6 +69,15 @@
                 <p id="productDescription">{{ product.description }}</p>
             </div>
 
+            <div class="store-selection-section">
+                <label for="storeSelect">Select Store:</label>
+                <select name="store" id="storeSelect" required>
+                    {% for store in stores %}
+                        <option value="{{store.shop_name}}">{{store.shop_name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
             <!-- Pricing Section -->
             <div class="pricing-section">
                 <label for="productPrice">Set Price (₹):</label>
