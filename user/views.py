@@ -161,3 +161,52 @@ def shopify_auth(request):
     full_url = f"{oauth_url}?{urllib.parse.urlencode(params)}"
 
     return redirect(full_url)
+
+def push_to_shopify(request):
+    if request.method == "POST":
+        product_id = request.POST['product_id']
+        store_name = request.POST['store']
+        product_price = request.POST['price']
+        
+        # Fetch the product based on product_id
+        product = Products.objects.get(id=product_id)
+        
+        # Select the store using store_name
+        store = Shop.objects.get(shop_name=store_name)
+        
+        # Prepare the product data for Shopify API
+        shopify_url = f"https://{store.shop_name}.myshopify.com/admin/api/products.json"
+        headers = {
+            'Content-Type': 'application/json',
+            'X-Shopify-Access-Token': store.access_token,  # Access token
+        }
+        
+        # Create the product data
+        product_data = {
+            "product": {
+                "title": product.name,
+                "body_html": product.description,
+                "vendor": product.vendor,
+                "product_type": product.category,
+                "variants": [
+                    {
+                        "price": product_price,
+                    }
+                ],
+                "images": [
+                    {
+                         "src": image.image.url
+                    } for image in product.images.all()
+                ]
+            }
+        }
+
+        # Make the request to Shopify
+        response = requests.post(shopify_url, json=product_data, headers=headers)
+
+        if response.status_code == 201:
+            messages.success(request, "Product pushed to Shopify successfully!")
+        else:
+            messages.error(request, "Failed to push product to Shopify!")
+
+    return redirect('find_products')

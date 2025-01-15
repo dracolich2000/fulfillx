@@ -58,7 +58,7 @@
     <div class="modal-content">
         <span class="close" onclick="closeShopifyModal()">&times;</span>
         <h2>Push to Shopify</h2>
-        <form id="shopifyForm" class="modal-form" method="POST" action="">
+        <form id="shopifyForm" class="modal-form" method="POST" action="{% url 'push_to_shopify' %}">
             {% csrf_token %}
             <input type="hidden" name="product_id" id="product_id">
 

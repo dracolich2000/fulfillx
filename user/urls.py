@@ -15,4 +15,5 @@ urlpatterns = [
     path('new_sourcing_request',views.new_sourcing_request,name='new_sourcing_request'),
     path('shopify/auth/', views.shopify_auth, name='shopify_auth'),
     path('shopify/callback/', views.shopify_callback, name='shopify_callback'),
+    path('pust_to_shopify/',views.push_to_shopify,name='push_to_shopify')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
