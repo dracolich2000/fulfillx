@@ -162,23 +162,36 @@ def shopify_auth(request):
 
     return redirect(full_url)
 
+from django.contrib import messages
+import requests
+from django.shortcuts import redirect
+from django.core.exceptions import ObjectDoesNotExist
+
 def push_to_shopify(request):
     if request.method == "POST":
         product_id = request.POST['product_id']
         store_name = request.POST['store']
         product_price = request.POST['price']
         
-        # Fetch the product based on product_id
-        product = Products.objects.get(id=product_id)
+        try:
+            # Fetch the product based on product_id
+            product = Products.objects.get(id=product_id)
+        except ObjectDoesNotExist:
+            messages.error(request, "Product not found!")
+            return redirect('find_products')
         
-        # Select the store using store_name
-        store = Shop.objects.get(shop_name=store_name)
+        try:
+            # Select the store using store_name
+            store = Shop.objects.get(shop_name=store_name)
+        except ObjectDoesNotExist:
+            messages.error(request, "Shop not found!")
+            return redirect('find_products')
         
         # Prepare the product data for Shopify API
-        shopify_url = f"https://{store.shop_name}.myshopify.com/admin/api/products.json"
+        shopify_url = f"https://{store.shop_name}.myshopify.com/admin/api/2023-01/products.json"
         headers = {
             'Content-Type': 'application/json',
-            'X-Shopify-Access-Token': store.access_token,  # Access token
+            'X-Shopify-Access-Token': store.access_token,  # Ensure token has the correct permissions
         }
         
         # Create the product data
@@ -195,7 +208,7 @@ def push_to_shopify(request):
                 ],
                 "images": [
                     {
-                         "src": image.image.url
+                        "src": image.image.url  # Ensure the image URL is valid
                     } for image in product.images.all()
                 ]
             }
@@ -204,9 +217,11 @@ def push_to_shopify(request):
         # Make the request to Shopify
         response = requests.post(shopify_url, json=product_data, headers=headers)
 
+        # Handle response
         if response.status_code == 201:
             messages.success(request, "Product pushed to Shopify successfully!")
         else:
-            messages.error(request, "Failed to push product to Shopify!")
-
+            error_msg = response.json()  # Get detailed error message from Shopify API
+            messages.error(request, f"Failed to push product to Shopify! Error: {error_msg}")
+    
     return redirect('find_products')
