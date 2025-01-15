@@ -61,7 +61,7 @@
     <div class="modal-content">
         <span class="close" onclick="closeModal()">&times;</span>
         <h2>Update Inventory</h2>
-        <form id="inventoryForm" method="POST" action="{% url 'vendor_update_inventory' %}">
+        <form id="inventoryForm" class='modal-form' method="POST" action="{% url 'vendor_update_inventory' %}">
             {% csrf_token %}
             <input type="hidden" id="product_id" name="product_id">
             <label for="inventory">Enter quantity:</label>

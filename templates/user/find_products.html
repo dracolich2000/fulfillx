@@ -41,7 +41,7 @@
                 <div class="product-content">
                     <h3 class="product-name">{{product.name}}</h3>
                     <p class="product-description">{{product.description}}</p>
-                    <a href="#" class="view-button">View</a>
+                    <a href="{% url 'user_view_product' product.id %}" class="view-button">View</a>
                 </div>
             </div>
             {% endfor %}

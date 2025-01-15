@@ -214,7 +214,7 @@
     <div class="modal-content">
         <span class="close" onclick="closeSourcingForm()">&times;</span>
         <h2>Update Sourcing Request Status</h2>
-        <form id="SourcingForm" method="POST" action="{% url 'update_sourcing_req_status' %}">
+        <form id="SourcingForm" class='modal-form' method="POST" action="{% url 'update_sourcing_req_status' %}">
             {% csrf_token %}
             <!-- Hidden field to store the request ID -->
             <input type="hidden" name="request_id" id="request_id">

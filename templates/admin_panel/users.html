@@ -114,7 +114,7 @@
     <div class="modal-content">
         <span class="close" onclick="closeRoleForm()">&times;</span>
         <h2>Assign Role</h2>
-        <form id="roleForm" method="POST" action="{% url 'assign_role' %}">
+        <form id="roleForm" class='modal-form' method="POST" action="{% url 'assign_role' %}">
             {% csrf_token %}
             <input type="hidden" name="user_id" id="user_id">
             <label for="role">Select Role:</label>

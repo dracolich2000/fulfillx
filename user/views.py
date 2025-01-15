@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import never_cache
 from staff.models import Products, SourcingProductRequest
@@ -51,6 +51,13 @@ def manage_store(request):
 @never_cache
 def my_products(request):
     return render(request, 'user/my_products.html')
+
+@role_required('User')
+@login_required(login_url='login')
+@never_cache
+def view_product(request,product_id):
+    product = get_object_or_404(Products, id=product_id)
+    return render(request, 'user/view_product.html',{'product':product})
 
 @role_required('User')
 @login_required(login_url='login')

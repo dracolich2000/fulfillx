@@ -31,6 +31,7 @@ def products(request):
 def add_product(request):
     if request.method == 'POST':
         name = request.POST['product_name']
+        price = request.POST['price']
         description = request.POST['product_description']
         images = request.FILES.getlist('product_image')
         vendor = request.POST['vendor']
@@ -39,6 +40,7 @@ def add_product(request):
         try:
             product = Products.objects.create(
                 name=name,
+                price=price,
                 category=category,
                 description=description,
                 created_by=request.user.username,
@@ -65,6 +67,7 @@ def update_product(request, product_id):
     if request.method == "POST":
         # Update product details
         product.name = request.POST.get("name")
+        product.price = request.POST.get('price')
         product.description = request.POST.get("description")
         product.inventory = request.POST.get("inventory")
         product.category = request.POST.get('category')

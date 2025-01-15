@@ -70,3 +70,66 @@ window.addEventListener('click', (event) => {
         modal.style.display = 'none';
     }
 });
+
+//image switching
+function switchImage(imageUrl) {
+    const mainImage = document.getElementById('mainImage');
+    mainImage.src = imageUrl;
+}
+
+function openShopifyModal(button) {
+    // Get data from button attributes
+    const productId = button.getAttribute('data-product-id');
+    const productImage = button.getAttribute('data-product-image');
+    const productName = button.getAttribute('data-product-name');
+    const productDescription = button.getAttribute('data-product-description');
+    const productBasePrice = parseFloat(button.getAttribute('data-product-price'));
+
+    // Set modal content
+    document.getElementById('productImage').src = productImage;
+    document.getElementById('productName').innerText = productName;
+    document.getElementById('productDescription').innerText = productDescription;
+    document.getElementById('product_id').value = productId;
+
+    // Store the base price globally
+    window.productBasePrice = productBasePrice;
+
+    // Show the modal
+    document.getElementById('shopifyModal').style.display = 'block';
+
+    // Attach the event listener for the input field (only once)
+    const setPriceInput = document.getElementById('productPrice');
+    if (!setPriceInput.dataset.listenerAttached) {
+        setPriceInput.addEventListener('input', calculateMargin);
+        setPriceInput.dataset.listenerAttached = true; // Mark listener as attached
+    }
+}
+
+// Close Modal
+function closeShopifyModal() {
+    document.getElementById('shopifyModal').style.display = 'none';
+}
+
+// Calculate Margin and Display It
+function calculateMargin() {
+    const setPriceInput = document.getElementById('productPrice');
+    const marginDisplay = document.getElementById('margin-display');
+
+    // Get the set price value
+    const setPrice = parseFloat(setPriceInput.value);
+
+    if (!isNaN(setPrice) && setPrice > 0) {
+        const margin = setPrice - window.productBasePrice;
+        marginDisplay.textContent = `Margin: ₹${margin.toFixed(2)}`;
+    } else {
+        marginDisplay.textContent = 'Margin: ₹0.00';
+    }
+}
+
+// Close the modal if clicking outside of it
+window.onclick = function(event) {
+    const modal = document.getElementById('shopifyModal');
+    if (event.target === modal) {
+        closeShopifyModal();
+    }
+};

@@ -4,6 +4,7 @@ from django.db import models
 class Products(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     images = models.ManyToManyField('ProductImage', related_name='products')
     category = models.CharField(max_length=255, default='')
     description = models.TextField()

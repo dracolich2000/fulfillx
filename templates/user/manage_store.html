@@ -42,7 +42,7 @@
     <div id="shopifyModal" class="modal">
         <div class="modal-content">
             <span class="close" id="closeModalBtn">&times;</span>
-            <form method="post" action="{% url 'shopify_auth' %}">
+            <form method="post" class='modal-form' action="{% url 'shopify_auth' %}">
                 {% csrf_token %}
                 <label for="shop">Enter your Shopify store URL:</label>
                 <input type="text" name="shop" id="shop" placeholder="mystore.myshopify.com" required>
