@@ -10,6 +10,7 @@ from django.http import HttpResponse
 import urllib.parse
 import requests
 from .models import Shop
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 @role_required('User')
@@ -142,10 +143,13 @@ def shopify_callback(request):
     else:
         return HttpResponse(f"Failed to get access token: {response.text}", status=400)
     
+@role_required('User')
+@login_required(login_url='login')
+@never_cache
 def shopify_auth(request):
     shopify_api_key = settings.SHOPIFY_API_KEY
     redirect_uri = settings.SHOPIFY_REDIRECT_URI
-    scopes = "read_products,write_products"  # Adjust scopes based on your app's requirements
+    scopes = "read_products,write_products,read_orders,write_orders,read_fulfillments,write_fulfillments,read_all_orders,read_inventory,write_inventory,read_shopify_payments_payouts,write_shopify_payments_payouts,read_payments_gateways,write_payments_gateways,"
     if request.method == 'POST':
         shop = request.POST['shop']
         if not shop:
@@ -162,11 +166,11 @@ def shopify_auth(request):
 
     return redirect(full_url)
 
-from django.contrib import messages
-import requests
-from django.shortcuts import redirect
-from django.core.exceptions import ObjectDoesNotExist
 
+
+@role_required('User')
+@login_required(login_url='login')
+@never_cache
 def push_to_shopify(request):
     if request.method == "POST":
         product_id = request.POST['product_id']
@@ -226,6 +230,9 @@ def push_to_shopify(request):
     
     return redirect('find_products')
 
+@role_required('User')
+@login_required(login_url='login')
+@never_cache
 def delete_store(request, store_id):
     store = get_object_or_404(Shop, id=store_id)
     try:
