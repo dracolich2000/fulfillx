@@ -8,9 +8,20 @@
 {% endblock %}
 
 {% block content %}
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
+
 <div id="fetch-orders-container">
     <a href="{% url 'fetch_shopify_orders' %}" id="fetch-orders-link" class="btn btn-primary">Get Orders from Shopify</a>
 </div>
+
 <div class="order-container">
     <h2>Shopify Orders</h2>
     <table id="ordersTable" class="orders-table">
