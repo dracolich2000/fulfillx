@@ -31,7 +31,7 @@
                 <td>{{ shop.linked_on }}</td>
                 <td>
                     <button class="btn update-price">Edit</button>
-                    <button class="btn delete">Delete</button>
+                    <a class="btn delete" href="{% url 'delete_store' %}">Delete</a>
                 </td>
             </tr>
             {% endfor %}

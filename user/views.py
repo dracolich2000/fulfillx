@@ -225,3 +225,13 @@ def push_to_shopify(request):
             messages.error(request, f"Failed to push product to Shopify! Error: {error_msg}")
     
     return redirect('find_products')
+
+def delete_store(request, store_id):
+    store = get_object_or_404(Shop, id=store_id)
+    try:
+        store.delete()
+        messages.success(request, 'Store deleted successfully!')
+        return redirect('manage_store')
+    except:
+        messages.error(request,'Something went wrong. please try again!')
+        return redirect('manage_store')
