@@ -252,7 +252,7 @@ def fetch_and_store_shopify_orders(request):
     
     for store in stores:
         try:
-            shopify_url = f"https://{store.shop_name}.myshopify.com/admin/api/2023-01/orders.json"
+            shopify_url = f"https://{store.shop_name}.myshopify.com/admin/api/2023-01/orders.json?fields=id,total_price,created_at,updated_at"
             headers = {
                 'Content-Type': 'application/json',
                 'X-Shopify-Access-Token': store.access_token,
