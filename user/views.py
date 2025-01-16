@@ -11,6 +11,7 @@ import urllib.parse
 import requests
 from .models import Shop, ShopifyOrder
 from django.core.exceptions import ObjectDoesNotExist
+import logging
 
 # Create your views here.
 @role_required('User')
@@ -248,6 +249,7 @@ def delete_store(request, store_id):
 @never_cache
 def fetch_and_store_shopify_orders(request):
     stores = Shop.objects.filter(linked_by=request.user.username)
+
     try:
         for store in stores:
             shopify_url = f"https://{store.shop_name}.myshopify.com/admin/api/2023-01/orders.json"
@@ -256,7 +258,7 @@ def fetch_and_store_shopify_orders(request):
                 'X-Shopify-Access-Token': store.access_token,
             }
             response = requests.get(shopify_url, headers=headers)
-            
+
             if response.status_code == 200:
                 orders_data = response.json().get('orders', [])
                 for order_data in orders_data:
@@ -269,11 +271,15 @@ def fetch_and_store_shopify_orders(request):
                             'updated_at': order_data['updated_at'],
                         }
                     )
-        messages.success(request,'Successfully fetched orders from Shopify!')
-        return redirect('user_orders', {'orders': ShopifyOrder.objects.all()})
-    except:
-        messages.error(request,'Failed to fetch orders from Shopify!')
+            else:
+                logging.error(f"Failed to fetch orders: {response.content}")
+                messages.error(request, 'Failed to fetch orders from Shopify!')
+                return redirect('user_orders')
+    except Exception as e:
+        logging.error(f"Error fetching orders: {str(e)}")
+        messages.error(request, 'Failed to fetch orders from Shopify!')
         return redirect('user_orders')
+
     
 @role_required('User')
 @login_required(login_url='login')
