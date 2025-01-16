@@ -14,6 +14,5 @@ class Shop(models.Model):
 class ShopifyOrder(models.Model):
     order_id = models.CharField(max_length=255, unique=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
-    customer_name = models.CharField(max_length=255)
     created_at = models.DateTimeField()
     updated_at = models.DateTimeField()
