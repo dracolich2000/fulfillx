@@ -266,7 +266,6 @@ def fetch_and_store_shopify_orders(request):
                         order_id=order_data['id'],
                         defaults={
                             'total_price': order_data['total_price'],
-                            'customer_name': f"{order_data['customer']['first_name']} {order_data['customer']['last_name']}",
                             'created_at': order_data['created_at'],
                             'updated_at': order_data['updated_at'],
                         }
