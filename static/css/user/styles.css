@@ -46,6 +46,7 @@ form .btn-primary {
     border-radius: 6px;
     cursor: pointer;
     transition: background-color 0.3s;
+    text-decoration: none;
 }
 
 form .btn-primary:hover {
