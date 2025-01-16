@@ -149,7 +149,7 @@ def shopify_callback(request):
 def shopify_auth(request):
     shopify_api_key = settings.SHOPIFY_API_KEY
     redirect_uri = settings.SHOPIFY_REDIRECT_URI
-    scopes = "read_products,write_products,read_orders,write_orders,read_fulfillments,write_fulfillments,read_all_orders,read_inventory,write_inventory,read_shopify_payments_payouts,write_shopify_payments_payouts,read_payments_gateways,write_payments_gateways,"
+    scopes = "read_products,write_products,read_orders,write_orders,read_fulfillments,write_fulfillments,read_all_orders,read_inventory,write_inventory,read_shopify_payments_payouts,write_shopify_payments_payouts,read_payment_gateways,write_payment_gateways,"
     if request.method == 'POST':
         shop = request.POST['shop']
         if not shop:
