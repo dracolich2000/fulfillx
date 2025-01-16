@@ -249,16 +249,16 @@ def delete_store(request, store_id):
 @never_cache
 def fetch_and_store_shopify_orders(request):
     stores = Shop.objects.filter(linked_by=request.user.username)
-
-    try:
-        for store in stores:
+    
+    for store in stores:
+        try:
             shopify_url = f"https://{store.shop_name}.myshopify.com/admin/api/2023-01/orders.json"
             headers = {
                 'Content-Type': 'application/json',
                 'X-Shopify-Access-Token': store.access_token,
             }
             response = requests.get(shopify_url, headers=headers)
-
+            
             if response.status_code == 200:
                 orders_data = response.json().get('orders', [])
                 for order_data in orders_data:
@@ -271,14 +271,16 @@ def fetch_and_store_shopify_orders(request):
                             'updated_at': order_data['updated_at'],
                         }
                     )
+                messages.success(request, 'Successfully fetched orders from Shopify!')
             else:
-                logging.error(f"Failed to fetch orders: {response.content}")
-                messages.error(request, 'Failed to fetch orders from Shopify!')
-                return redirect('user_orders')
-    except Exception as e:
-        logging.error(f"Error fetching orders: {str(e)}")
-        messages.error(request, 'Failed to fetch orders from Shopify!')
-        return redirect('user_orders')
+                logging.error(f"Failed to fetch orders for store {store.shop_name}: {response.content}")
+                messages.error(request, f"Failed to fetch orders for store {store.shop_name}!")
+
+        except Exception as e:
+            logging.error(f"Error fetching orders for store {store.shop_name}: {str(e)}")
+            messages.error(request, f"An error occurred while fetching orders for store {store.shop_name}!")
+    
+    return redirect('user_orders')
 
     
 @role_required('User')
