@@ -250,10 +250,10 @@ def fetch_and_store_shopify_orders(request):
     stores = Shop.objects.filter(linked_by=request.user.username)
     try:
         for store in stores:
-            shopify_url = "https://{{store.shop_name}}.myshopify.com/admin/api/2023-01/orders.json"
+            shopify_url = f"https://{store.shop_name}.myshopify.com/admin/api/2023-01/orders.json"
             headers = {
                 'Content-Type': 'application/json',
-                'X-Shopify-Access-Token': '{{store.access_token}}',
+                'X-Shopify-Access-Token': store.access_token,
             }
             response = requests.get(shopify_url, headers=headers)
             
