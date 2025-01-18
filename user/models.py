@@ -13,6 +13,15 @@ class Shop(models.Model):
 
 class ShopifyOrder(models.Model):
     order_id = models.CharField(max_length=255, unique=True)
+    customer_name = models.CharField(max_length=255, blank=True, null=True)  # Optional customer name
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField()
-    updated_at = models.DateTimeField()
+    payment_status = models.CharField(max_length=255, blank=True, null=True)
+    fulfillment_status = models.CharField(max_length=255, blank=True, null=True)
+    delivery_status = models.CharField(max_length=255, blank=True, null=True)
+
+class ShopifyOrderItem(models.Model):
+    order = models.ForeignKey(ShopifyOrder, related_name='items', on_delete=models.CASCADE)
+    product_name = models.CharField(max_length=255)
+    quantity = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)  # Price of individual item

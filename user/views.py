@@ -9,7 +9,7 @@ from django.conf import settings
 from django.http import HttpResponse
 import urllib.parse
 import requests
-from .models import Shop, ShopifyOrder
+from .models import Shop, ShopifyOrder, ShopifyOrderItem
 from django.core.exceptions import ObjectDoesNotExist
 import logging
 
@@ -252,7 +252,7 @@ def fetch_and_store_shopify_orders(request):
     
     for store in stores:
         try:
-            shopify_url = f"https://{store.shop_name}.myshopify.com/admin/api/2023-01/orders.json?fields=id,total_price,created_at,updated_at"
+            shopify_url = f"https://{store.shop_name}.myshopify.com/admin/api/2023-01/orders.json?fields=id,total_price,created_at,financial_status,fulfillment_status,line_items"
             headers = {
                 'Content-Type': 'application/json',
                 'X-Shopify-Access-Token': store.access_token,
@@ -262,15 +262,26 @@ def fetch_and_store_shopify_orders(request):
             if response.status_code == 200:
                 orders_data = response.json().get('orders', [])
                 for order_data in orders_data:
-                    ShopifyOrder.objects.update_or_create(
+                    order, created = ShopifyOrder.objects.update_or_create(
                         order_id=order_data['id'],
                         defaults={
                             'total_price': order_data['total_price'],
                             'created_at': order_data['created_at'],
-                            'updated_at': order_data['updated_at'],
+                            'payment_status': order_data.get('financial_status', ''),
+                            'fulfillment_status': order_data.get('fulfillment_status', ''),
                         }
                     )
-                messages.success(request, 'Successfully fetched orders from Shopify!')
+                    # Update or create order items
+                    for item_data in order_data.get('line_items', []):
+                        ShopifyOrderItem.objects.update_or_create(
+                            order=order,
+                            product_name=item_data['name'],
+                            defaults={
+                                'quantity': item_data['quantity'],
+                                'price': item_data['price'],
+                            }
+                        )
+                messages.success(request, f'Successfully fetched orders from {store.shop_name}!')
             else:
                 logging.error(f"Failed to fetch orders for store {store.shop_name}: {response.content}")
                 messages.error(request, f"Failed to fetch orders for store {store.shop_name}!")
@@ -286,5 +297,5 @@ def fetch_and_store_shopify_orders(request):
 @login_required(login_url='login')
 @never_cache
 def orders(request):
-    orders = ShopifyOrder.objects.all()
+    orders = ShopifyOrder.objects.prefetch_related('items').all()
     return render(request, 'user/orders.html',{'orders':orders})
