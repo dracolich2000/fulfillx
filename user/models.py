@@ -13,7 +13,7 @@ class Shop(models.Model):
 
 class ShopifyOrder(models.Model):
     order_id = models.CharField(max_length=255, unique=True)
-    customer_name = models.CharField(max_length=255, blank=True, null=True)  # Optional customer name
+    customer = models.CharField(max_length=255, blank=True, null=True)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
     created_at = models.DateTimeField()
     payment_status = models.CharField(max_length=255, blank=True, null=True)
